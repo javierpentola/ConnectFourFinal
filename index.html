@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/Game.js" type="module"></script>
+
+  <title>Connect Four</title>
+</head>
+
+<body>
+  <div class="main-menu | full-vp">
+    <div class="main-menu__wrapper">
+      <div class="main-menu__screen">
+        <div class="start-menu | menu-box | box box--big box--purple">
+          <button class="btn-pvc | box-btn box-btn--red">Play against CPU</button>
+          <button class="btn-pvp | box-btn box-btn--yellow" style="text-align: left;">Player vs Player</button>
+          <button class="btn-rules | box-btn box-btn--white" style="display: block; margin: 0 auto;">Game Rules</button>
+        </div>
+      </div>
+      <div class="main-menu__screen">
+        <div class="rules | menu-box | box box--big box--white">
+          <p class="box-title">Rules</p>
+          <p class="box-subtitle">Objective</p>
+          <p class="box-text">Be the first player to connect 4 discs of the same color in a row (either vertically, horizontally, or diagonally).</p>
+          <p class="box-subtitle">How to Play</p>
+          <ul class="box-list">
+            <li class="box-item">Red goes first in the first game.</li>
+            <li class="box-item">Players must alternate turns, and only one disc can be dropped per turn.</li>
+            <li class="box-item">The game ends when there is a 4 in a row or a stalemate.</li>
+            <li class="box-item">The player who started the previous game goes second in the next game.</li>
+          </ul>
+          <button class="btn-ok-rules"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game | full-vp">
+    <div class="game__wrapper | full-vp">
+      <header class="game__header">
+        <button class="btn-menu | game-btn">Menu</button>
+        <button class="btn-restart | game-btn">Restart</button>
+      </header>
+      <div class="scores">
+        <div class="score1 score | box box--white"></div>
+        <div class="score2 score | box box--white"></div>
+      </div>
+      <div class="grid">
+        <div class="grid__wrapper"></div>
+      </div>
+      <div class="status">
+        <div class="info | box box--white">
+          <button class="btn-play | game-btn">Play</button>
+        </div>
+        <div class="timer"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ingame-menu | full-vp">
+    <div class="ingame-menu__wrapper | full-vp">
+      <div class="menu-box | box box--big box--purple">
+        <p class="box-title">Pause</p>
+        <button class="btn-continue | box-btn box-btn--white">Continue Game</button>
+        <button class="btn-restart-menu | box-btn box-btn--white">Restart</button>
+        <button class="btn-quit | box-btn box-btn--red">Quit Game</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-screen | full-vp"></div>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    body {
+        font-family: 'Exo', sans-serif;
+    }
+
+    .context {
+        width: 100%;
+        position: absolute;
+        top: 50vh;
+    }
+
+    .context h1 {
+        text-align: center;
+        color: #fff;
+        font-size: 50px;
+    }
+
+    .area {
+        background: #001f3f;
+        background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+        width: 100%;
+        height: 100vh;
+    }
+
+    /* Emojis in the top left corner */
+    .circles.top-left {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 35%;
+        height: 35%;
+        overflow: hidden;
+    }
+
+    /* Emojis in the bottom right corner */
+    .circles.bottom-right {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 35%;
+        height: 35%;
+        overflow: hidden;
+    }
+
+    /* Emoji animations */
+    .circles li {
+        position: absolute;
+        display: block;
+        list-style: none;
+        background: none;
+        animation: animate 25s linear infinite;
+        bottom: -150px;
+        left: calc(var(--random-left, 0%) * 1%);
+    }
+
+    @keyframes animate {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(-1000px) rotate(360deg);
+            opacity: 0.5;
+        }
+    }
+
+    .circles li:nth-child(1) {
+        left: 25%;
+        width: 80px;
+        height: 80px;
+        animation-delay: 0s;
+    }
+
+    .circles li:nth-child(2) {
+        left: 10%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 2s;
+        animation-duration: 12s;
+    }
+
+    .circles li:nth-child(3) {
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+    }
+
+    .circles li:nth-child(4) {
+        left: 40%;
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+        animation-duration: 18s;
+    }
+
+    .circles li:nth-child(5) {
+        left: 65%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 0s;
+    }
+
+    .circles li:nth-child(6) {
+        left: 75%;
+        width: 110px;
+        height: 110px;
+        animation-delay: 3s;
+    }
+
+    .circles li:nth-child(7) {
+        left: 35%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 7s;
+    }
+
+    .circles li:nth-child(8) {
+        left: 50%;
+        width: 25px;
+        height: 25px;
+        animation-delay: 15s;
+        animation-duration: 45s;
+    }
+
+    .circles li:nth-child(9) {
+        left: 20%;
+        width: 15px;
+        height: 15px;
+        animation-delay: 2s;
+        animation-duration: 35s;
+    }
+
+    .circles li:nth-child(10) {
+        left: 85%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 0s;
+        animation-duration: 11s;
+    }
+
+  </style>
+
+  <head>
+      <meta charset="UTF-8">
+      <title></title>
+      <link rel="stylesheet" href="./style.css">
+      <style>
+          .recuadros {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 10px;
+              z-index: 2;
+          }
+
+          .recuadro {
+              background-color: rgba(255, 255, 255, 0.2);
+              border: none;
+              border-radius: 8px;
+              padding: 10px;
+              width: 300px;
+              color: white;
+              font-size: 16px;
+          }
+      </style>
+  </head>
+
+  <body>
+      <div class="context">
+          <h1></h1>
+      </div>
+
+      <div class="area">
+          <ul class="circles">
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+              <li onclick="showInfo()">🔴</li>
+              <li onclick="showInfo()">🔵</li>
+              <li onclick="showInfo()">🟡</li>
+          </ul>
+      </div>
+
+  </body>
+
+</html>

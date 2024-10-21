@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 70 75">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e6382e;
+      }
+
+      .cls-2 {
+        filter: url(#filter-2);
+      }
+    </style>
+    <filter id="filter-2" x="-3.9%" y="-3.9%" width="107.8%" height="107.8%">
+      <feOffset dx="0" dy="5" in="SourceAlpha" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.1, SVG Export Plug-In . SVG Version: 1.2.0 Build 142)  -->
+  <g>
+    <g id="Capa_1">
+      <g id="Designs">
+        <g id="counter-red-large">
+          <circle id="Oval-Copy-41" cx="35" cy="35" r="35"/>
+          <circle id="Oval-Copy-42" cx="35" cy="40" r="35"/>
+          <g id="Oval-Copy-43">
+            <circle id="path-1" class="cls-1" cx="35" cy="35" r="32"/>
+            <g class="cls-2">
+              <circle id="path-1-2" data-name="path-1" class="cls-1" cx="35" cy="35" r="32"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
